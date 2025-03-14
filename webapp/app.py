@@ -168,59 +168,82 @@ def create_watchlist():
 
 @app.route("/scanner")
 def scanner():
-    r = requests.get(f"{BASE_API_URL}/iserver/scanner/params", verify=False)
-    params = r.json()
+    try:
+        r = requests.get(f"{BASE_API_URL}/iserver/scanner/params", verify=False)
+        params = r.json()
+        
+        if 'error' in params:
+            return render_template("scanner.html", 
+                                error="Scanner not available. Please ensure you are connected to TWS or IB Gateway.",
+                                params={}, 
+                                scanner_map={}, 
+                                filter_map={}, 
+                                scan_results=[])
 
-    scanner_map = {}
-    filter_map = {}
+        scanner_map = {}
+        filter_map = {}
 
-    for item in params['instrument_list']:
-        scanner_map[item['type']] = {
-            "display_name": item['display_name'],
-            "filters": item['filters'],
-            "sorts": []
-        }
-
-    for item in params['filter_list']:
-        filter_map[item['group']] = {
-            "display_name": item['display_name'],
-            "type": item['type'],
-            "code": item['code']
-        }
-
-    for item in params['scan_type_list']:
-        for instrument in item['instruments']:
-            scanner_map[instrument]['sorts'].append({
-                "name": item['display_name'],
-                "code": item['code']
-            })
-
-    for item in params['location_tree']:
-        scanner_map[item['type']]['locations'] = item['locations']
-
-
-    submitted = request.args.get("submitted", "")
-    selected_instrument = request.args.get("instrument", "")
-    location = request.args.get("location", "")
-    sort = request.args.get("sort", "")
-    scan_results = []
-    filter_code = request.args.get("filter", "")
-    filter_value = request.args.get("filter_value", "")
-
-    if submitted:
-        data = {
-            "instrument": selected_instrument,
-            "location": location,
-            "type": sort,
-            "filter": [
-                {
-                    "code": filter_code,
-                    "value": filter_value
+        # Only process these if they exist in the response
+        if 'instrument_list' in params:
+            for item in params['instrument_list']:
+                scanner_map[item['type']] = {
+                    "display_name": item['display_name'],
+                    "filters": item['filters'],
+                    "sorts": []
                 }
-            ]
-        }
-            
-        r = requests.post(f"{BASE_API_URL}/iserver/scanner/run", json=data, verify=False)
-        scan_results = r.json()
 
-    return render_template("scanner.html", params=params, scanner_map=scanner_map, filter_map=filter_map, scan_results=scan_results)
+        if 'filter_list' in params:
+            for item in params['filter_list']:
+                filter_map[item['group']] = {
+                    "display_name": item['display_name'],
+                    "type": item['type'],
+                    "code": item['code']
+                }
+
+        if 'scan_type_list' in params:
+            for item in params['scan_type_list']:
+                for instrument in item['instruments']:
+                    if instrument in scanner_map:
+                        scanner_map[instrument]['sorts'].append({
+                            "name": item['display_name'],
+                            "code": item['code']
+                        })
+
+        if 'location_tree' in params:
+            for item in params['location_tree']:
+                if item['type'] in scanner_map:
+                    scanner_map[item['type']]['locations'] = item['locations']
+
+        submitted = request.args.get("submitted", "")
+        selected_instrument = request.args.get("instrument", "")
+        location = request.args.get("location", "")
+        sort = request.args.get("sort", "")
+        scan_results = []
+        filter_code = request.args.get("filter", "")
+        filter_value = request.args.get("filter_value", "")
+
+        if submitted:
+            data = {
+                "instrument": selected_instrument,
+                "location": location,
+                "type": sort,
+                "filter": [
+                    {
+                        "code": filter_code,
+                        "value": filter_value
+                    }
+                ]
+            }
+                
+            r = requests.post(f"{BASE_API_URL}/iserver/scanner/run", json=data, verify=False)
+            scan_results = r.json()
+
+        return render_template("scanner.html", params=params, scanner_map=scanner_map, filter_map=filter_map, scan_results=scan_results)
+    
+    except Exception as e:
+        return render_template("scanner.html", 
+                            error=f"Scanner error: {str(e)}. Please ensure you are connected to TWS or IB Gateway.",
+                            params={}, 
+                            scanner_map={}, 
+                            filter_map={}, 
+                            scan_results=[])
