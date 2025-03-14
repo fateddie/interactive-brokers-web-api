@@ -23,13 +23,13 @@ COPY start.sh /app
 ADD webapp webapp
 ADD scripts scripts
 
-# Commented out for now, some commands that are helpful if you want to install your own SSL certificate
-# RUN keytool -genkey -keyalg RSA -alias selfsigned -keystore cacert.jks -storepass abc123 -validity 730 -keysize 2048 -dname CN=localhost
-# RUN keytool -importkeystore -srckeystore cacert.jks -destkeystore cacert.p12 -srcstoretype jks -deststoretype pkcs12 -srcstorepass abc123 -deststorepass abc123
-# RUN openssl pkcs12 -in cacert.p12 -out cacert.pem -passin pass:abc123 -passout pass:abc123
-# RUN cp cacert.pem gateway/root/cacert.pem
-# RUN cp cacert.jks gateway/root/cacert.jks
-# RUN cp cacert.pem webapp/cacert.pem
+# Generate and install SSL certificates
+RUN keytool -genkey -keyalg RSA -alias selfsigned -keystore cacert.jks -storepass abc123 -validity 730 -keysize 2048 -dname CN=localhost
+RUN keytool -importkeystore -srckeystore cacert.jks -destkeystore cacert.p12 -srcstoretype jks -deststoretype pkcs12 -srcstorepass abc123 -deststorepass abc123
+RUN openssl pkcs12 -in cacert.p12 -out cacert.pem -passin pass:abc123 -passout pass:abc123
+RUN cp cacert.pem gateway/root/cacert.pem
+RUN cp cacert.jks gateway/root/cacert.jks
+RUN cp cacert.pem webapp/cacert.pem
 
 # Expose the port so we can connect
 EXPOSE 5055 5056

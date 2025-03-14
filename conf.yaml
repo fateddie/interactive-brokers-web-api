@@ -5,8 +5,8 @@ listenPort: 5055
 listenSsl: true
 ccp: false
 svcEnvironment: "v1"
-sslCert: "vertx.jks"
-sslPwd: "mywebapi"
+sslCert: "cacert.jks"
+sslPwd: "abc123"
 #sslCert: "cacert.jks"
 #sslPwd: "abc123"
 authDelay: 3000
