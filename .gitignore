@@ -1,14 +1,79 @@
-# Byte-compiled / optimized / DLL files
+# Configuration
+conf.yaml
+gateway/root/conf.yaml
+gateway/root/jts.ini
+gateway/root/ssl/
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.env
+.env.*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Certificates and Keys
+*.pem
+*.key
+*.crt
+*.cer
+*.der
+*.priv
+*.jks
+*.p12
+
+# Logs
+*.log
+logs/
+log/
+
+# Cache
+.cache/
+.pytest_cache/
+
+# Local development
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database
+*.db
+*.sqlite3
+
+# Docker
+.docker/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -56,7 +121,6 @@ cover/
 *.pot
 
 # Django stuff:
-*.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -161,36 +225,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-venv/
-ENV/
-env/
-.env
-
-# Distribution / packaging
-dist/
-build/
-*.egg-info/
-
 # IDE specific files
-.idea/
-.vscode/
-*.swp
-*.swo
-.DS_Store
-
-# Virtual Environment
-venv/
-ENV/
-env/
-.env
-
-# IDE
 .idea/
 .vscode/
 *.swp
@@ -198,38 +233,3 @@ env/
 
 # Docker
 .docker/
-
-# Certificates and Keys
-*.pem
-*.key
-*.crt
-*.cer
-*.der
-*.priv
-*.jks
-*.p12
-
-# Logs
-*.log
-logs/
-log/
-
-# Cache
-.cache/
-.pytest_cache/
-
-# Local development
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Database
-*.db
-*.sqlite3
-
-# IB Gateway specific
-gateway/root/conf.yaml
-gateway/root/jts.ini
-gateway/root/ssl/

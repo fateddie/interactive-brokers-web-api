@@ -1,0 +1,41 @@
+# Interactive Brokers Gateway Configuration Template
+# Copy this file to conf.yaml and update with your settings
+
+# Gateway Configuration
+gateway:
+  # Your IB Gateway host (usually localhost)
+  host: "127.0.0.1"
+  # IB Gateway port (default: 5055)
+  port: 5055
+  # SSL Configuration
+  ssl:
+    # Set to true to enable SSL
+    enabled: true
+    # Path to your certificate files
+    cert_path: "/app/gateway/root/ssl"
+    key_file: "server.key"
+    cert_file: "server.crt"
+
+# Application Settings
+app:
+  # Flask application port (default: 5056)
+  port: 5056
+  # Debug mode (set to false in production)
+  debug: true
+  # Secret key for session management
+  secret_key: "your-secret-key-here"
+
+# Trading Configuration
+trading:
+  # Default account ID
+  account_id: "YOUR_ACCOUNT_ID"
+  # Risk management settings
+  max_position_size: 2.0
+  max_drawdown: 3.0
+  hedge_only_threshold: 5.0
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  file: "app.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s" 
