@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold mb-2">🧠 Market Context: {{ context.pair }}</h2>
+    </div>
+
+    <!-- Main Content -->
+    <div class="grid grid-cols-1 gap-6 max-w-2xl mx-auto">
+        <!-- Key Metrics -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <div class="stats shadow w-full">
+                    <div class="stat">
+                        <div class="stat-title">Drawdown</div>
+                        <div class="stat-value {% if context.drawdown > 3.0 %}text-error{% else %}text-success{% endif %}">
+                            {{ "%.2f"|format(context.drawdown) }}%
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-title">Exposure</div>
+                        <div class="stat-value">{{ "%.2f"|format(context.exposure) }} lots</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-title">Hedge-Only</div>
+                        <div class="stat-value">
+                            {% if context.hedge_only %}
+                                <span class="text-success">✅ Yes</span>
+                            {% else %}
+                                <span class="text-error">❌ No</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sentiment Snapshot -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h3 class="card-title">📊 Sentiment Snapshot</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="font-semibold">Sentiment:</span>
+                        <span class="badge {% if context.sentiment == 'Bullish' %}badge-success{% elif context.sentiment == 'Bearish' %}badge-error{% else %}badge-neutral{% endif %}">
+                            {{ context.sentiment }}
+                        </span>
+                    </div>
+                    <div>
+                        <span class="font-semibold">Summary:</span>
+                        <p class="mt-1">{{ context.summary }}</p>
+                    </div>
+                    <div>
+                        <span class="font-semibold">Source:</span>
+                        <p class="mt-1">{{ context.source }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strategy Insights -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h3 class="card-title">🧠 Strategy Insights</h3>
+                <div class="space-y-2">
+                    {% for flag in context.strategy_flags %}
+                    <div class="alert {% if '⚠️' in flag %}alert-warning{% elif '🧠' in flag %}alert-info{% else %}alert-success{% endif %}">
+                        <span>{{ flag }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Past References -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h3 class="card-title">📎 Past References</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for ref in context.topdown_refs %}
+                    <div class="badge badge-primary">{{ ref }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Assistant Suggestion -->
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h3 class="card-title">💬 Assistant Suggestion</h3>
+                <div class="alert {% if '🚨' in context.assistant_tip %}alert-error{% elif '⚠️' in context.assistant_tip %}alert-warning{% else %}alert-success{% endif %}">
+                    <span>{{ context.assistant_tip }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center mt-8">
+        <a href="/" class="btn btn-primary">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h2>Trade Plan Strategy Check</h2>
+
+  <form method="post" class="mb-4">
+    <div class="form-group">
+      <label for="plan">Enter your trade idea:</label>
+      <textarea id="plan" name="plan" rows="4" class="form-control" placeholder="Example: Looking to enter long at support with a stop loss below structure. Target is previous high. Risk is 2% of portfolio.">{{ request.form.plan }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Check Strategy</button>
+  </form>
+
+  {% if result %}
+    {% if result.feedback %}
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3 class="card-title mb-0">AI Assistant Feedback</h3>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            {% for feedback in result.feedback %}
+              <li class="list-group-item">{{ feedback }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if result.concepts %}
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3 class="card-title mb-0">Matched Trading Concepts</h3>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            {% for c in result.concepts %}
+              <li class="list-group-item">
+                <strong>{{ c.name }}</strong>
+                <p class="mb-0">{{ c.description }}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if result.rules %}
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3 class="card-title mb-0">Trading Rules to Consider</h3>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            {% for r in result.rules %}
+              <li class="list-group-item">{{ r.rule }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+  {% endif %}
+{% endblock %}

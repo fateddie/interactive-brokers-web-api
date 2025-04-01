@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Trading Knowledge Graph</h2>
+
+    {% if graph.error %}
+        <div class="alert alert-danger">
+            {{ graph.error }}
+        </div>
+    {% else %}
+        <!-- Trading Concepts -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Trading Concepts</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for concept in graph.concepts %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ concept.name }}</h5>
+                                    <p class="card-text">{{ concept.description }}</p>
+                                    <!-- Show related rules -->
+                                    {% for rule in graph.rules %}
+                                        {% if rule.applies_to == concept.id %}
+                                            <div class="alert alert-info mt-2">
+                                                <small>📋 Related Rule: {{ rule.rule }}</small>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Trading Rules -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Trading Rules</h3>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    {% for rule in graph.rules %}
+                        <div class="list-group-item">
+                            <h5 class="mb-1">Rule {{ loop.index }}</h5>
+                            <p class="mb-1">{{ rule.rule }}</p>
+                            <!-- Show related concept -->
+                            {% for concept in graph.concepts %}
+                                {% if rule.applies_to == concept.id %}
+                                    <small class="text-muted">🔗 Related to: {{ concept.name }}</small>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Relationships -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title mb-0">Knowledge Graph Relationships</h3>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    {% for edge in graph.edges %}
+                        <div class="list-group-item">
+                            <p class="mb-1">
+                                {% for concept in graph.concepts %}
+                                    {% if concept.id == edge.from %}
+                                        <strong>{{ concept.name }}</strong>
+                                    {% endif %}
+                                {% endfor %}
+                                {{ edge.type }}
+                                <strong>{{ edge.to }}</strong>
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

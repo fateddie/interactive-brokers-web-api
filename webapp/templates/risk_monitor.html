@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold mb-6">🛡️ Risk Exposure Monitor</h2>
+
+    <!-- Portfolio Overview Stats -->
+    <div class="stats shadow mb-8 w-full">
+        <div class="stat">
+            <div class="stat-title">💼 Total Positions</div>
+            <div class="stat-value">{{ exposure|length }}</div>
+            <div class="stat-desc">Active trading pairs</div>
+        </div>
+        <div class="stat {% if drawdown > 3.0 %}bg-error text-error-content{% endif %}">
+            <div class="stat-title">📉 Current Drawdown</div>
+            <div class="stat-value">{{ "%.2f"|format(drawdown) }}%</div>
+            <div class="stat-desc">
+                {% if drawdown > 3.0 %}
+                    ⚠️ Above threshold!
+                {% else %}
+                    ✅ Within limits
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left Column: Positions and Alerts -->
+        <div class="space-y-6">
+            <!-- Active Positions -->
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h3 class="card-title text-lg">💼 Open Exposure</h3>
+                    <div class="overflow-x-auto">
+                        <table class="table w-full">
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Size (Lots)</th>
+                                    <th>Risk Level</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for symbol, size in exposure.items() %}
+                                    <tr class="{% if size > 2.0 %}bg-warning bg-opacity-20{% endif %}">
+                                        <td class="font-mono">{{ symbol }}</td>
+                                        <td class="font-mono">{{ "%.2f"|format(size) }}</td>
+                                        <td>
+                                            {% if size > 2.0 %}
+                                                <span class="badge badge-warning gap-1">
+                                                    ⚠️ High
+                                                </span>
+                                            {% else %}
+                                                <span class="badge badge-success gap-1">
+                                                    ✅ Normal
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Alerts -->
+            {% if alerts %}
+                <div class="card bg-warning bg-opacity-10 shadow-xl">
+                    <div class="card-body">
+                        <h3 class="card-title text-warning">⚠️ Risk Alerts</h3>
+                        <ul class="space-y-2">
+                            {% for alert in alerts %}
+                                <li class="alert alert-warning">{{ alert }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Right Column: Strategy Insights -->
+        <div class="space-y-6">
+            <!-- Strategy Flags -->
+            {% if flags %}
+                <div class="card bg-info bg-opacity-10 shadow-xl">
+                    <div class="card-body">
+                        <h3 class="card-title text-info">🧠 Strategy Flags</h3>
+                        <ul class="space-y-2">
+                            {% for flag in flags %}
+                                <li class="alert alert-info">{{ flag }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Trading Rules Card -->
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h3 class="card-title">📋 Risk Management Rules</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>Maximum exposure per position: 2.0 lots</li>
+                        <li>Drawdown threshold: 3.0%</li>
+                        <li>Monitor hedge-only zones for specific pairs</li>
+                        <li>Apply DCT when drawdown exceeds threshold</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auto-refresh Script -->
+    <script>
+        // Refresh the page every 60 seconds to keep risk data current
+        setTimeout(function() {
+            window.location.reload();
+        }, 60000);
+    </script>
+</div>
+{% endblock %} 

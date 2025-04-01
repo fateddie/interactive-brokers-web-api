@@ -1,2 +1,6 @@
-flask
-requests
+flask==3.1.0
+requests==2.32.3
+ib_insync==0.9.86
+python-dotenv==1.0.1
+werkzeug>=3.1
+openai>=1.0.0

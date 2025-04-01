@@ -1,0 +1,12 @@
+[
+  {
+    "id": "R_1ac50877",
+    "rule": "Trigger DCT when bias is broken and portfolio drawdown exceeds comfort level.",
+    "applies_to": "C_4ef36aa1"
+  },
+  {
+    "id": "R_ad4de5f5",
+    "rule": "Wait for structure break before confirming bias.",
+    "applies_to": "C_8529d1eb"
+  }
+]

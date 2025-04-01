@@ -1,0 +1,27 @@
+[
+  {
+    "id": "C_4ef36aa1",
+    "name": "Damage Control Trading",
+    "description": "Strategy for managing trades when bias breaks or structure shifts, often involving hedge logic."
+  },
+  {
+    "id": "C_f0a3fee2",
+    "name": "Hedge-Only Zone",
+    "description": "Price areas where only hedge trades are allowed, not new bias entries."
+  },
+  {
+    "id": "C_8529d1eb",
+    "name": "Bias and Structure Relationship",
+    "description": "Establishing directional bias only after structure confirms or breaks."
+  },
+  {
+    "id": "C_94a9f07e",
+    "name": "Phased Trade Development",
+    "description": "Trades develop in phases \u2014 early, transition, mature. Strategy adapts accordingly."
+  },
+  {
+    "id": "C_2baf1260",
+    "name": "Drawdown-Controlled Trading",
+    "description": "Trade management adapts to account drawdown limits using concepts like DCT and hedging."
+  }
+]

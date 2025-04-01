@@ -1,0 +1,37 @@
+[
+  {
+    "from": "C_4ef36aa1",
+    "type": "mentioned_in",
+    "to": "deepdives.zip"
+  },
+  {
+    "from": "C_f0a3fee2",
+    "type": "mentioned_in",
+    "to": "deepdives.zip"
+  },
+  {
+    "from": "C_2baf1260",
+    "type": "mentioned_in",
+    "to": "mentorship.zip"
+  },
+  {
+    "from": "C_8529d1eb",
+    "type": "mentioned_in",
+    "to": "mentorship.zip"
+  },
+  {
+    "from": "C_94a9f07e",
+    "type": "mentioned_in",
+    "to": "mentorship.zip"
+  },
+  {
+    "from": "R_ad4de5f5",
+    "type": "applies_to",
+    "to": "C_8529d1eb"
+  },
+  {
+    "from": "R_1ac50877",
+    "type": "applies_to",
+    "to": "C_4ef36aa1"
+  }
+]
